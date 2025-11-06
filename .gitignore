@@ -1,0 +1,6 @@
+# Ignorar pastas e arquivos temporários do Docker/MySQL
+mysql_data/
+vendor/
+node_modules/
+.env
+*.log

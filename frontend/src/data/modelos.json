@@ -1,0 +1,5 @@
+[
+    { "id": 1, "nome": "Ka Sedan 1.0", "marcaId": 1 },
+    { "id": 2, "nome": "Gol 1.6", "marcaId": 3 },
+    { "id": 3, "nome": "Hb20s 1.0", "marcaId": 2 }
+]
