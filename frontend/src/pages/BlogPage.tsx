@@ -1,10 +1,18 @@
 import Card from "../components/card";
+import { useTheme } from "../context/ThemeContext";
 
 export default function PageBlog() {
-
+    const { dark } = useTheme();
   return (
-    <div className="min-h-screen bg-gray-100 p-8 mt-39">
-        <Card className="mt-14 mb-5 p-10 max-w-4xl mx-auto shadow-xl rounded-3xl border border-gray-100 bg-white/80 backdrop-blur-sm">
+    <div className="min-h-screen p-8 mt-39">
+        <Card 
+            className={`mt-14 mb-5 p-10 max-w-4xl mx-auto shadow-xl rounded-3xl border backdrop-blur-sm ${
+                        dark 
+                            ? "bg-zinc-600 border-neutral-500"
+                            : "border-gray-100 bg-white/80"
+                        }
+            `}
+        >
             <p className="text-center font-bold text-2xl pb-7">
                 Sobre o projeto
             </p>

@@ -6,8 +6,10 @@ import MarcaForm from "../components/MarcaForm";
 import MarcaList from "../components/MarcaList";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Paginacao from "../components/Paginacao";
+import { useTheme } from "../context/ThemeContext";
 
 export default function MarcasPage() {
+    const { dark } = useTheme();
     const [marcas, setMarcas] = useState<Marca[]>([]);
     const [modelos, setModelos] = useState<Modelo[]>([]);
     const [loading, setLoading] = useState(true);
@@ -45,17 +47,24 @@ export default function MarcasPage() {
         return (
             <LoadingSpinner 
                 text="Carregando marcas..."
-                classLoading="min-h-screen flex items-center justify-center bg-gray-100"
+                classLoading="min-h-screen flex items-center justify-center"
                 classLoadingTwo="flex flex-col items-center justify-center py-10"
-                classSpinner="animate-spin h-10 w-10 text-blue-600 mb-3"
+                classSpinner={`animate-spin h-10 w-10 mb-3 ${dark ? "text-violet-500" : "text-indigo-600"}`}
             />
         )
     }
 
     return (
-        <div className="min-h-screen bg-gray-100 p-8 mt-15">
-            <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 max-w-3xl mx-auto mt-10">
-                <h1 className="text-2xl font-semibold mb-4 text-gray-800">Cadastrar Marcas</h1>
+        <div className="min-h-screen p-8 mt-15">
+            <div className={`p-8 rounded-2xl shadow-lg border max-w-3xl mx-auto mt-10 ${
+                    dark 
+                        ? "bg-zinc-600 border-neutral-500"
+                        : "border-gray-100 bg-white/80"
+                    }
+                `}
+            >
+                
+                <h1 className="text-2xl font-semibold mb-4">Cadastrar Marcas</h1>
                 <MarcaForm 
                     onAdd={handleAdd} 
                     carregando={carregando}

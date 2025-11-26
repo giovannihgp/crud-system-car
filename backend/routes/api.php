@@ -69,3 +69,17 @@ Route::prefix('descricao_marca')->group(function () {
     Route::put('{id}', [DescricaoMarcaController::class, 'update_descricao_marca']);
     Route::delete('{id}', [DescricaoMarcaController::class, 'destroy_descricao_marca']);
 });
+
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout']);
+
+// Route::middleware('auth:sanctum')->group(function () {
+    
+//     Route::get('/modelos', [ModeloController::class, 'index_modelo']);
+
+//     Route::middleware('admin')->group(function () {
+//         Route::post('/modelos', [ModeloController::class, 'store_modelo']);
+//         Route::put('/modelos/{id}', [ModeloController::class, 'update_modelo']);
+//         Route::delete('/modelos/{id}', [ModeloController::class, 'destroy_modelo']);
+//     });
+// });

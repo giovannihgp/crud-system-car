@@ -4,7 +4,6 @@ import { clsx } from "clsx";
 
 export const cardVariants = tv({
 	base: `
-		bg-white
         rounded-4xl
         transition-shadow
         duration-200
@@ -13,6 +12,7 @@ export const cardVariants = tv({
 	`,
 	variants: {
 		variant: {
+			none: "",
 			default: "border border-blue-200 shadow-md",
 			primary: "bg-blue-50 border border-blue-300",
 		},
@@ -24,7 +24,7 @@ export const cardVariants = tv({
 	},
 	defaultVariants: {
 		size: "md",
-		variant: "default",
+		variant: "none",
 	},
 });
 

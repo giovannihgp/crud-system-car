@@ -7,8 +7,10 @@ import ModeloForm from "../components/ModeloForm";
 import ModeloList from "../components/ModeloList";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Paginacao from "../components/Paginacao";
+import { useTheme } from "../context/ThemeContext";
 
 export default function ModelosPage() {
+    const { dark } = useTheme();
     const [modelos, setModelos] = useState<Modelo[]>([]);
     const [marcas, setMarcas] = useState<Marca[]>([]);
     const [loadingInicial, setLoadingInicial] = useState(true);
@@ -49,16 +51,23 @@ export default function ModelosPage() {
         return (
             <LoadingSpinner 
                 text="Carregando modelos..."
-                classLoading="min-h-screen flex items-center justify-center bg-gray-100"
+                classLoading="min-h-screen flex items-center justify-center"
                 classLoadingTwo="flex flex-col items-center justify-center py-10"
-                classSpinner="animate-spin h-10 w-10 text-blue-600 mb-3"
+                classSpinner={`animate-spin h-10 w-10 mb-3 ${dark ? "text-violet-500" : "text-indigo-600"}`}
             />
         )
     };
 
     return (
-        <div className="min-h-screen bg-gray-100 p-8 mt-17">
-            <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 max-w-3xl mx-auto mt-10">
+        <div className="min-h-screen p-8 mt-17">
+            <div 
+                className={`max-w-3xl mx-auto mt-10 border p-8 rounded-2xl shadow-lg ${
+                    dark 
+                        ? "bg-zinc-600 border-neutral-500"
+                        : "border-gray-100 bg-white/80"
+                    }`
+                }
+            >
                 <ModeloForm 
                     marcas={marcas} 
                     onAdd={handleAddModelo} 

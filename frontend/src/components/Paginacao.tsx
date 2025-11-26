@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useTheme } from "../context/ThemeContext";
 
 interface PaginacaoProps {
     totalItems: number,
@@ -9,6 +10,7 @@ interface PaginacaoProps {
 }
 
 export default function Paginacao({ totalItems, itemsPorPage, paginaAtual, setPaginaAtual, children } : PaginacaoProps) {
+    const { dark } = useTheme();
     const totalPagina = Math.max(1, Math.ceil(totalItems / itemsPorPage));
 
     useEffect(() => {
@@ -23,14 +25,19 @@ export default function Paginacao({ totalItems, itemsPorPage, paginaAtual, setPa
 
     if (totalItems > 0 ) {
         return (
-            <div className="flex justify-between items-center mt-6 text-sm text-gray-600">
+            <div className="flex justify-between items-center mt-6 text-sm">
                 <button
                     onClick={(e) => {
                         setPaginaAtual(paginaAtual - 1);
                         blurAfter(e);
                     }}
                     disabled={paginaAtual === 1}
-                    className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:shadow-md transition-all"
+                    className={`px-3 py-1 rounded disabled:opacity-50 focus:outline-none focus:ring-2 hover:shadow-md transition-all border 
+                        ${dark 
+                            ? "bg-zinc-500 focus:ring-violet-400 border-zinc-400" 
+                            : "bg-gray-200 focus:ring-indigo-500 hover:bg-gray-300"
+                        }`
+                    }
                 >
                     ← Anterior
                 </button>
@@ -43,7 +50,12 @@ export default function Paginacao({ totalItems, itemsPorPage, paginaAtual, setPa
                         blurAfter(e);
                     }}
                     disabled={paginaAtual === totalPagina}
-                    className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className={`px-3 py-1 rounded disabled:opacity-50 focus:outline-none focus:ring-2 hover:shadow-md transition-all border
+                        ${dark 
+                            ? "bg-zinc-500 focus:ring-violet-400 border-zinc-400" 
+                            : "bg-gray-200 focus:ring-indigo-500 border-gray-300"
+                        }`
+                    }
                 >
                     Próxima →
                 </button>
@@ -51,7 +63,7 @@ export default function Paginacao({ totalItems, itemsPorPage, paginaAtual, setPa
         );
     } else {
         return (
-            <div className="flex justify-center items-center mt-6 text-md font-medium text-gray-600 pb-2">
+            <div className="flex justify-center items-center mt-6 text-md font-medium pb-2">
                 <span>
                     Ainda não existem {children} cadastrados no momento.
                 </span>

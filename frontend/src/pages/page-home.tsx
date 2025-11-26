@@ -5,9 +5,11 @@ import type { Modelo } from "../types/modelo";
 import { useEffect, useState } from "react";
 import { getModelos } from "../api/modelos";
 import { getMarcas } from "../api/marcas";
+import { useTheme } from "../context/ThemeContext";
 
 export default function PageHome() {
-    
+    const { dark } = useTheme();
+
     const [marcas, setMarcas] = useState<Marca[]>([]);
     const [modelos, setModelos] = useState<Modelo[]>([]);
 
@@ -18,7 +20,14 @@ export default function PageHome() {
 
     return (
         <>
-            <section className="relative bg-gradient-to-r from-blue-600 to-indigo-700 text-white pt-25 pb-15 text-center shadow-lg">
+            <section 
+                className={`relative bg-linear-to-r pt-25 pb-15 text-center shadow-lg ${
+                    dark 
+                        ? "from-purple-600 to-violet-700 text-gray-100"
+                        : "from-blue-600 to-indigo-700 text-white"
+                    }
+                `}
+            >
                 <div className="max-w-3xl mx-auto px-4">
                     <h1 className="text-4xl font-extrabold mb-4 tracking-tight">
                         AutoHub — Gestão de Veículos
@@ -30,7 +39,14 @@ export default function PageHome() {
                 </div>
             </section>
             <Container>
-                <Card className="mt-14 mb-5 p-10 max-w-4xl mx-auto shadow-xl rounded-3xl border border-gray-100 bg-white/80 backdrop-blur-sm">
+                <Card 
+                    className={`mt-14 mb-5 p-10 max-w-4xl mx-auto shadow-xl rounded-3xl border backdrop-blur-sm ${
+                        dark 
+                            ? "bg-zinc-600 border-neutral-500"
+                            : "border-gray-100 bg-white/80"
+                        }
+                    `}
+                >
                     <div className="flex items-center justify-center gap-3 pb-7">
                         <svg
                             className=""
@@ -47,7 +63,7 @@ export default function PageHome() {
                         </p>
                     </div>
                     <p className="leading-relaxed font-light">
-                        O <span className="font-semibold text-blue-600">AutoHub</span> é um sistema desenvolvido para organizar e gerenciar informações de veículos de forma <span className="font-semibold">simples</span> e <span className="font-semibold">eficiente</span>. Com ele, é possível <span className="font-normal">cadastrar</span> e <span className="font-normal">consultar</span> <span className="font-semibold">marcas</span> e <span className="font-semibold">modelos</span> de automóveis, mantendo tudo estruturado e acessível.
+                        O <span className={`font-semibold ${dark ? "text-violet-500" : "text-indigo-600"}`}>AutoHub</span> é um sistema desenvolvido para organizar e gerenciar informações de veículos de forma <span className="font-semibold">simples</span> e <span className="font-semibold">eficiente</span>. Com ele, é possível <span className="font-normal">cadastrar</span> e <span className="font-normal">consultar</span> <span className="font-semibold">marcas</span> e <span className="font-semibold">modelos</span> de automóveis, mantendo tudo estruturado e acessível.
                     </p>
 
                     <p className="leading-relaxed font-light my-2">
@@ -55,21 +71,26 @@ export default function PageHome() {
                     </p>
 
                     <p className="leading-relaxed font-light">
-                        Ideal para cenários que envolvem listagem, controle e consulta de informações automotivas, o <span className="font-semibold text-blue-600">AutoHub</span> serve como base para evoluções, podendo futuramente integrar recursos adicionais relacionados a veículos.
+                        Ideal para cenários que envolvem listagem, controle e consulta de informações automotivas, o <span className={`font-semibold ${dark ? "text-violet-500" : "text-indigo-600"}`}>AutoHub</span> serve como base para evoluções, podendo futuramente integrar recursos adicionais relacionados a veículos.
                     </p>
                 </Card>
             </Container>
-            <section className="py-20 bg-gray-50 my-7">
-                <h2 className="text-center text-3xl font-bold text-gray-800 mb-12">
+            <section className="py-20 my-7">
+                <h2 className="text-center text-3xl font-bold mb-12">
                     Marcas Registradas
                 </h2>
                 <ul className="max-w-4xl grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mx-auto px-6">
                     {marcas.map((m) => (
                         <li
                             key={m.id}
-                            className="text-center text-xl px-6 py-4 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-blue-300 transition-all duration-200"
+                            className={`text-center text-xl px-6 py-4 border rounded-xl shadow-sm transition-all duration-200 hover:shadow-md ${
+                                dark
+                                    ? "bg-zinc-600 border-neutral-500 hover:border-violet-400"
+                                    : "bg-gray-100 border-gray-200 hover:border-indigo-300"
+                                }
+                            `}
                         >
-                            <span className="font-semibold text-gray-800 ">
+                            <span className="font-semibold">
                                 {m.nome}
                             </span>
                         </li>
@@ -77,7 +98,7 @@ export default function PageHome() {
                 </ul>
             </section>
             <section className="py-10">
-                <h2 className="text-center text-3xl font-bold text-gray-800 mb-12">
+                <h2 className="text-center text-3xl font-bold mb-12">
                     Modelos registrados
                 </h2>
             <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-6 px-8 pd-16">
@@ -86,7 +107,12 @@ export default function PageHome() {
                     return (
                         <div 
                             key={modelo.id}
-                            className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-200 hover:-translate-y-1"
+                            className={`rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border hover:-translate-y-1 ${
+                                dark
+                                    ? "bg-zinc-600 border-neutral-500"
+                                    : "bg-gray-50 border-gray-200"
+                                }
+                            `}
                         >
                             <img 
                                 src={modelo.imagem || "https://placehold.co/300x200?text=Sem+Imagem"}
@@ -94,31 +120,31 @@ export default function PageHome() {
                                 className="w-full h-48 object-cover"
                             />
                             <div className="p-5">
-                                <p className="text-xl font-semibold text-gray-800 mb-3 text-center">
+                                <p className="text-xl font-semibold mb-3 text-center">
                                     {modelo.nome}
                                 </p>
-                                <ul className="text-gray-600 space-y-2 text-sm">
+                                <ul className={`space-y-2 text-sm ${dark ? "text-gray-100" : "text-gray-600"}`}>
                                     <li>
-                                        <span className="text-gray-500 font-medium">Marca:</span>{" "} 
-                                        <span className="font-semibold text-gray-700">
+                                        <span className={`font-medium ${dark ? "text-gray-200" : "text-gray-500"}`}>Marca:</span>{" "} 
+                                        <span className={`font-semibold ${dark ? "text-gray-50" : "text-gray-700"}`}>
                                             {marca ? marca.nome : "Desconhecida"}
                                         </span>
                                     </li>
                                     <li>
-                                        <span className="text-gray-500 font-medium">Portas:</span>{" "}
-                                        <span className="font-semibold text-gray-700">
+                                        <span className={`font-medium ${dark ? "text-gray-200" : "text-gray-500"}`}>Portas:</span>{" "}
+                                        <span className={`font-semibold ${dark ? "text-gray-50" : "text-gray-700"}`}>
                                             {modelo.numero_portas}
                                         </span>
                                     </li>
                                     <li>
-                                        <span className="text-gray-500 font-medium">AirBag:</span>{" "} 
-                                        <span className="font-semibold text-gray-700">
+                                        <span className={`font-medium ${dark ? "text-gray-200" : "text-gray-500"}`}>AirBag:</span>{" "} 
+                                        <span className={`font-semibold ${dark ? "text-gray-50" : "text-gray-700"}`}>
                                             {modelo.air_bag ? "Sim" : "Não"}
                                         </span>
                                     </li>
                                     <li>
-                                        <span className="text-gray-500 font-medium">ABS:</span>{" "}
-                                        <span className="font-semibold text-gray-700">
+                                        <span className={`font-medium ${dark ? "text-gray-200" : "text-gray-500"}`}>ABS:</span>{" "}
+                                        <span className={`font-semibold ${dark ? "text-gray-50" : "text-gray-700"}`}>
                                             {modelo.abs ? "Sim" : "Não"}
                                         </span>
                                     </li>

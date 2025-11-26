@@ -4,6 +4,7 @@ import ModelosPage from './pages/ModelosPage';
 import LayoutMain from './components/layout';
 import PageHome from './pages/page-home';
 import PageBlog from "./pages/BlogPage";
+import AuthPage from "./pages/AuthenticationPage";
 
 export default function App() {
 
@@ -12,9 +13,10 @@ export default function App() {
         <Routes>
           <Route path='/' element={<LayoutMain />}>
             <Route index element={<PageHome />} />
-            <Route path="noticias" element={<PageBlog />} />
+            <Route path="maisSobre" element={<PageBlog />} />
             <Route path="marcas" element={<MarcasPage />} />
             <Route path="modelos" element={<ModelosPage />} />
+            <Route path="conta" element={<AuthPage />} />
             <Route path="*" element={<PageHome />} />
           </Route>
         </Routes>

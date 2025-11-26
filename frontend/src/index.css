@@ -1,7 +1,12 @@
-/* src/index.css ou src/App.css */
 @import "tailwindcss/preflight.css";
 @import "tailwindcss/theme.css";
 @import "tailwindcss/utilities.css";
+
+@layer base {
+  html.dark {
+    color-scheme: dark;
+  }
+}
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-4px); }

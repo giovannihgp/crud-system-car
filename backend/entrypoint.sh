@@ -13,6 +13,10 @@ if [ ! -d "vendor" ]; then
   composer install
 fi
 
-php artisan migrate:fresh --seed --force
+echo "Executando migrate e seeds..."
+
+php artisan migrate --seed --force
+
+echo "Feito!"
 
 php artisan serve --host=0.0.0.0 --port=8000

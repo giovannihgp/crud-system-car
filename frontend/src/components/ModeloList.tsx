@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import type { Modelo } from "../types/modelo";
 import type { Marca } from "../types/marca";
 import { modeloService } from "../services/modeloService";
+import { useTheme } from "../context/ThemeContext";
 
 interface ModeloListProps {
     modelos: Modelo[];
@@ -12,6 +13,7 @@ interface ModeloListProps {
 }
 
 export default function ModeloList({ modelos, marcas, setModelos, children }: ModeloListProps) {
+    const { dark } = useTheme();
     const [editandoId, setEditandoId] = useState<number | null>(null);
     const [erroEdicao, setErroEdicao] = useState("");
     const [confirmarRemoverId, setConfirmarRemoverId] = useState<number | null>(null);
@@ -133,33 +135,54 @@ export default function ModeloList({ modelos, marcas, setModelos, children }: Mo
                 {modelos.map((m) => (
                     <li
                         key={m.id}
-                        className={`border content-center px-4 py-2 rounded-lg hover:shadow-md shadow-sm transition-all min-h-[61px]
-                            ${confirmarRemoverId === m.id ? "border-red-200 bg-red-50" : "bg-white border-gray-200"}`
-                        }
+                        className={`border content-center px-4 py-2 rounded-lg hover:shadow-md shadow-sm transition-all min-h-[61px] ${
+                            confirmarRemoverId === m.id 
+                                ? dark
+                                    ? "border-red-500 bg-red-100"
+                                    : "border-red-200 bg-red-50"
+                                : dark
+                                    ? "bg-zinc-600 border-neutral-500"
+                                    : "bg-white border-gray-100"
+                            }
+                        `}
                     >
                         {editandoId === m.id ? (
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                 <div className="flex flex-col col-span-2">
-                                    <label className="text-sm text-gray-600">Nome</label>
+                                    <label className="text-sm pb-1">Nome</label>
                                     <input 
                                         value={editNome}
                                         onChange={(e) => setEditNome(e.target.value)}
-                                        className={`border rounded-md px-3 py-2 focus:outline-none focus:ring-2 
-                                            ${errors.nome ? "border-red-500 ring-red-300" : "border-gray-300 focus:ring-blue-500"}`
-                                        }
+                                        className={`border rounded-md px-3 py-2 focus:outline-none focus:ring-2 ${
+                                            errors.nome 
+                                                ? dark
+                                                    ? "border-red-700 ring-red-500" 
+                                                    : "border-red-500 ring-red-300"
+                                                : dark
+                                                    ? "border-neutral-500 focus:border-violet-400 focus:ring-violet-300 placeholder:text-gray-100"
+                                                    : "border-gray-300 focus:border-indigo-600 focus:ring-indigo-500"
+                                            }
+                                        `}
                                         placeholder="Nome do modelo"
                                     />
                                 </div>
                                 <div className="flex flex-col">
-                                    <label className="text-sm text-gray-600">Marca</label>
+                                    <label className="text-sm">Marca</label>
                                     <select
                                         value={editMarcaId ?? ""}
                                         onChange={(e) => 
                                             setEditMarcaId(e.target.value ? Number(e.target.value) : null)
                                         }
-                                        className={`border rounded-md px-3 py-2 focus:outline-none focus:ring-2 
-                                            ${errors.marca ? "border-red-500 ring-red-300" : "border-gray-300 focus:ring-blue-500"}`
-                                        }
+                                        className={`border rounded-md px-3 py-2 focus:outline-none focus:ring-2 ${
+                                            errors.marca 
+                                                ? dark
+                                                    ? "border-red-700 ring-red-500" 
+                                                    : "border-red-500 ring-red-300"
+                                                : dark
+                                                    ? "border-neutral-500 focus:border-violet-400 focus:ring-violet-300 bg-zinc-600"
+                                                    : "border-gray-300 focus:border-indigo-600 focus:ring-indigo-500"
+                                            }
+                                        `}
                                     >
                                         <option value="">Selecione uma Marca</option>
                                         {marcas.map((marca) => (
@@ -170,22 +193,29 @@ export default function ModeloList({ modelos, marcas, setModelos, children }: Mo
                                     </select>
                                 </div>
                                 <div className="flex flex-col">
-                                    <label className="text-sm text-gray-600">Portas</label>
+                                    <label className="text-sm">Portas</label>
                                     <select 
                                         value={editPortas ?? ""}
                                         onChange={(e) => 
                                             setEditPortas(Number(e.target.value) || null)
                                         }
-                                        className={`border rounded-md px-3 py-2 focus:outline-none focus:ring-2 
-                                            ${errors.portas ? "border-red-500 ring-red-300" : "border-gray-300 focus:ring-blue-500"}`
-                                        }
+                                        className={`border rounded-md px-3 py-2 focus:outline-none focus:ring-2 ${
+                                            errors.portas 
+                                                ? dark
+                                                    ? "border-red-700 ring-red-500" 
+                                                    : "border-red-500 ring-red-300"
+                                                : dark
+                                                    ? "border-neutral-500 focus:border-violet-400 focus:ring-violet-300 bg-zinc-600"
+                                                    : "border-gray-300 focus:border-indigo-600 focus:ring-indigo-500"
+                                            }
+                                        `}
                                     >
                                         <option value="">Portas</option>
                                         {[2,3,4].map((n) => <option key={n} value={n}>{n}</option>)}
                                     </select>
                                 </div>
                                 <div className="flex flex-col">
-                                    <label className="text-sm text-gray-600">AirBag</label>
+                                    <label className="text-sm">AirBag</label>
                                     <select 
                                         value={editAirBag === null ? "" : editAirBag ? "true" : "false"}
                                         onChange={(e) =>  
@@ -193,9 +223,16 @@ export default function ModeloList({ modelos, marcas, setModelos, children }: Mo
                                                 e.target.value === "" ? null : e.target.value === "true"
                                             )
                                         }
-                                        className={`border rounded-md px-3 py-2 focus:outline-none focus:ring-2 
-                                            ${errors.airbag ? "border-red-500 ring-red-300" : "border-gray-300 focus:ring-blue-500"}`
-                                        }
+                                        className={`border rounded-md px-3 py-2 focus:outline-none focus:ring-2 ${
+                                            errors.airbag 
+                                                ? dark
+                                                    ? "border-red-700 ring-red-500" 
+                                                    : "border-red-500 ring-red-300"
+                                                : dark
+                                                    ? "border-neutral-500 focus:border-violet-400 focus:ring-violet-300 bg-zinc-600"
+                                                    : "border-gray-300 focus:border-indigo-600 focus:ring-indigo-500"
+                                            }
+                                        `}
                                     >
                                         <option value="">Air Bag</option>
                                         <option value="true">Sim</option>
@@ -203,7 +240,7 @@ export default function ModeloList({ modelos, marcas, setModelos, children }: Mo
                                     </select>
                                 </div>
                                 <div className="flex flex-col">
-                                    <label className="text-sm text-gray-600">ABS</label>
+                                    <label className="text-sm">ABS</label>
                                     <select 
                                         value={editAbs === null ? "" : editAbs ? "true" : "false"}
                                         onChange={(e) => 
@@ -211,9 +248,16 @@ export default function ModeloList({ modelos, marcas, setModelos, children }: Mo
                                                 e.target.value === "" ? null : e.target.value === "true"
                                             )
                                         }
-                                        className={`border rounded-md px-3 py-2 focus:outline-none focus:ring-2 
-                                            ${errors.abs ? "border-red-500 ring-red-300" : "border-gray-300 focus:ring-blue-500"}`
-                                        }
+                                        className={`border rounded-md px-3 py-2 focus:outline-none focus:ring-2 ${
+                                            errors.abs 
+                                                ? dark
+                                                    ? "border-red-700 ring-red-500"
+                                                    : "border-red-500 ring-red-300"
+                                                : dark
+                                                    ? "border-neutral-500 focus:border-violet-400 focus:ring-violet-300 bg-zinc-600"
+                                                    : "border-gray-300 focus:border-indigo-600 focus:ring-indigo-500"
+                                            }
+                                        `}
                                     >
                                         <option value="">ABS</option>
                                         <option value="true">Sim</option>
@@ -221,7 +265,7 @@ export default function ModeloList({ modelos, marcas, setModelos, children }: Mo
                                     </select>
                                 </div>
                                 <div className="flex flex-col col-span-2">
-                                    <label className="text-sm text-gray-600">Imagem</label>
+                                    <label className="text-sm">Imagem</label>
                                     <input
                                         type="file"
                                         accept="image/*"
@@ -236,14 +280,28 @@ export default function ModeloList({ modelos, marcas, setModelos, children }: Mo
                                             reader.onloadend = () => setEditImagem(reader.result as string);
                                             reader.readAsDataURL(file);
                                         }}
-                                        className={`border rounded-md px-3 py-2 focus:outline-none focus:ring-2 
-                                            ${errors.imagem ? "border-red-500 ring-red-300" : "border-gray-300 focus:ring-blue-500"}`
-                                        }
+                                        className={`border rounded-md px-3 py-2 focus:outline-none focus:ring-2 cursor-pointer ${
+                                            errors.imagem 
+                                                ? dark
+                                                    ? "border-red-700 ring-red-500"
+                                                    : "border-red-500 ring-red-300"
+                                                : dark
+                                                    ? "border-neutral-500 focus:border-violet-400 focus:ring-violet-300 bg-zinc-600"
+                                                    : "border-gray-300 focus:border-indigo-600 focus:ring-indigo-500"
+                                            }
+                                        `}
                                     />
                                 </div>
-                                <div className="flex flex-col justify-center col-span-3 min-h-[48px]">
+                                <div className="flex flex-col justify-center col-span-3 min-h-12">
                                     {erroEdicao && (
-                                        <p className="text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2 text-sm mt-2 col-span-full text-center font-semibold">
+                                        <p 
+                                            className={`border rounded-md px-3 py-2 text-sm mt-2 col-span-full text-center font-semibold ${
+                                                dark 
+                                                    ? "text-red-700 bg-red-200 border-red-500" 
+                                                    : "text-red-600 bg-red-50 border-red-200"
+                                                }
+                                            `}
+                                        >
                                             {erroEdicao}
                                         </p>
                                     )}
@@ -251,13 +309,24 @@ export default function ModeloList({ modelos, marcas, setModelos, children }: Mo
                                 <div className="flex justify-end gap-3 sm:col-span-2 lg:col-span-3 mb-2">
                                     <button
                                         onClick={() => handleSalvarEdit(m.id)}
-                                        className="bg-green-600 hover:bg-green-700 text-white font-semibold px-5 py-2 rounded-lg transition"
+                                        className={`font-semibold px-5 py-2 rounded-lg transition ${
+                                            dark 
+                                                ? "bg-emerald-700 hover:bg-emerald-800 text-gray-50" 
+                                                : "bg-green-600 hover:bg-green-700 text-white"
+                                            }
+                                        `}
+                                        
                                     >
                                         Salvar
                                     </button>
                                     <button
                                         onClick={handleCancelarEdit}
-                                        className="bg-red-500 hover:bg-red-600 text-white font-semibold px-5 py-2 rounded-lg transition"
+                                        className={`font-semibold px-5 py-2 rounded-lg focus:outline-none focus:ring-2 hover:shadow-md transition-all ${
+                                            dark 
+                                                ? "bg-rose-400 hover:bg-rose-500 focus:ring-rose-300 text-gray-50" 
+                                                : "bg-red-600 hover:bg-red-700 focus:ring-red-400 text-white"
+                                            }
+                                        `}
                                     >
                                         Cancelar
                                     </button>
@@ -271,13 +340,23 @@ export default function ModeloList({ modelos, marcas, setModelos, children }: Mo
                                 <div className="flex flex-2 gap-2 items-center justify-end">
                                     <button
                                         onClick={() => handleDelete(m.id)}
-                                        className="bg-red-600 hover:bg-red-700 text-white rounded-md font-semibold px-2 py-1"
+                                        className={`rounded-md font-medium px-2 py-1 focus:outline-none focus:ring-2 hover:shadow-md transition-all ${
+                                            dark 
+                                                ? "bg-rose-500 hover:bg-rose-600 focus:ring-rose-400 text-gray-50" 
+                                                : "bg-red-600 hover:bg-red-700 focus:ring-red-400 text-white"
+                                            }
+                                        `}
                                     >
                                         Confirmar
                                     </button>
                                     <button
                                         onClick={handleCancelarRemover}
-                                        className="bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-md font-semibold px-2 py-1"
+                                        className={`rounded-md font-medium px-2 py-1 ${
+                                            dark 
+                                                ? "bg-zinc-500 hover:bg-zinc-600 text-zinc-200" 
+                                                : "bg-gray-300 hover:bg-gray-400 text-gray-800"
+                                            }
+                                        `}
                                     >
                                         Cancelar
                                     </button>
@@ -286,25 +365,49 @@ export default function ModeloList({ modelos, marcas, setModelos, children }: Mo
                         ) : (
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between">
                                 <div>
-                                    <span className="font-medium text-gray-800 dark:text-gray-100">
-                                    {m.nome}
+                                    <span 
+                                        className={`font-medium ${
+                                            dark 
+                                                ? "text-gray-100" 
+                                                : "text-gray-800"
+                                            }
+                                        `}
+                                    >
+                                        {m.nome}
                                     </span>
-                                    <span className="text-gray-500 dark:text-gray-400 text-sm block sm:inline">
-                                    {" "}
-                                    ({getMarcaNome(m)}) • {m.numero_portas} portas •{" "}
-                                    {m.air_bag ? "AirBag" : "Sem AirBag"} • {m.abs ? "ABS" : "Sem ABS"}
+                                    <span 
+                                        className={`text-sm block sm:inline ${
+                                            dark 
+                                                ? "text-gray-400" 
+                                                : "text-gray-500"
+                                            }
+                                        `}
+                                    >
+                                        {" "}
+                                        ({getMarcaNome(m)}) • {m.numero_portas} portas •{" "}
+                                        {m.air_bag ? "AirBag" : "Sem AirBag"} • {m.abs ? "ABS" : "Sem ABS"}
                                     </span>
                                 </div>
                                 <div className="flex gap-3 mt-2 sm:mt-0">
                                     <button
                                         onClick={() => handleEditClick(m)}
-                                        className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
+                                        className={`hover:underline font-medium cursor-pointer ${
+                                            dark 
+                                                ? "text-blue-400 hover:text-blue-500"
+                                                : "text-blue-600 hover:text-blue-700"
+                                            }
+                                        `}
                                     >
                                         Editar
                                     </button>
                                     <button
                                         onClick={() => handleConfirmarRemover(m.id)}
-                                        className="text-red-600 dark:text-red-400 hover:underline font-medium"
+                                        className={`hover:underline font-medium cursor-pointer ${
+                                            dark 
+                                                ? "text-rose-400 hover:text-rose-500" 
+                                                : "text-red-600 hover:text-red-700"
+                                            }
+                                        `}
                                     >
                                         Remover
                                     </button>
