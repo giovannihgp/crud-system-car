@@ -22,7 +22,7 @@ class AdminSeeder extends Seeder
                 'id' => 1,
                 'username' => 'admin',
                 'password' => Hash::make('123'),
-                'role' => 1
+                // 'role' => 1
             ],
         ];
         

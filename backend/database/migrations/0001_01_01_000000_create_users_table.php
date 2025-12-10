@@ -9,13 +9,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('username')->unique();
+            $table->increments('id');
+            $table->string('username', 73)->unique();
             $table->string('password');
-            $table->Integer('role');
+            // $table->Integer('role');
             $table->timestamps();
         });
-
     }
 
       public function down(): void

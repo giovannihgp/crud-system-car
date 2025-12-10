@@ -13,7 +13,7 @@ interface MarcaListProps {
 
 export default function MarcaList({ marcas, modelos, setMarcas, children }: MarcaListProps) {
 
-    const { dark }= useTheme();
+    const { dark } = useTheme();
     const [editandoId, setEditandoId] = useState<number | null>(null);
     const [editNome, setEditNome] = useState("");
     const [erroEdicao, setErroEdicao] = useState<{ [id: number]: string }>({});

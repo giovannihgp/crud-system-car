@@ -25,7 +25,6 @@ class MarcaController extends Controller
     try {
         $marca = new Marca();
 
-        // Validação conforme as regras do modelo
         $request->validate($marca->rules());
 
         $novaMarca = Marca::create($request->all());
@@ -33,14 +32,12 @@ class MarcaController extends Controller
         return response()->json($novaMarca, 201);
 
     } catch (\Illuminate\Validation\ValidationException $e) {
-        // Caso a validação falhe (ex: nome já existe)
         return response()->json([
             'message' => 'Já existe uma marca com esse nome!',
             'errors' => $e->errors()
         ], 422);
 
     } catch (\Exception $e) {
-        // Qualquer outro erro inesperado
         return response()->json([
             'message' => 'Erro ao criar a marca.',
             'error' => $e->getMessage()
@@ -83,6 +80,7 @@ class MarcaController extends Controller
         $marca = Marca::findOrFail($id);
         $marca->delete();
 
-        return response()->json(null, 204);
+        // return response()->json(null, 204);
+        return response()->json(['message' => 'Marca removida com sucesso'], 200);
     }
 }

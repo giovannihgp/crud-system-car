@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+// use App\User;
 
 class User extends Authenticatable
 {
@@ -28,10 +29,15 @@ class User extends Authenticatable
     protected $fillable = [
         'username',
         'password',
-        'role',
+        // 'role',
     ];
 
     public function username(){
         return 'username';
     }
+
+    
+    // public function __construct(User $user){ 
+    //     $this->user = $user; 
+    // }
 }

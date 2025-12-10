@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
 
 class AuthController extends Controller
 {
@@ -34,9 +35,9 @@ class AuthController extends Controller
         ]);
     }
 
-    public function logout(){
-        
+    public function logout(Request $request) { 
         $request->user()->currentAccessToken()->delete();
+        // $request->user()->tokens()->delete();
 
         return response()->json([
             'message' => 'Logout realizado com sucesso'

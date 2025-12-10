@@ -66,6 +66,7 @@ class ModeloController extends Controller
         $modelo = Modelo::findOrFail($id);
         $modelo->delete();
 
-        return response()->json(null, 204);
+        // return response()->json(null, 204);
+        return response()->json(['message' => 'Modelo removido com sucesso'], 200);
     }
 }

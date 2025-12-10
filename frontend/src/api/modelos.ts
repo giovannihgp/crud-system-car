@@ -1,9 +1,8 @@
 import type { Modelo } from "../types/modelo";
+import { apiFetch } from "./client";
 
 export const getModelos = async (): Promise<Modelo[]> => {
-  const response = await fetch("/api/modelos");
-  if (!response.ok) throw new Error("Erro ao buscar modelos");
-  return response.json();
+  return apiFetch<Modelo[]>("/modelos", { method: "GET" });
 };
 
 export const addModelo = async (
@@ -14,9 +13,8 @@ export const addModelo = async (
   marca_id: number,
   imagem?: string
 ): Promise<Modelo> => {
-  const response = await fetch("/api/modelos", {
+  return apiFetch("/modelos", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ 
       nome, 
       numero_portas,
@@ -26,13 +24,10 @@ export const addModelo = async (
       imagem
     }),
   });
-  if (!response.ok) throw new Error("Erro ao adicionar modelo");
-  return response.json();
 };
 
 export const deleteModelo = async (id: number): Promise<void> => {
-  const response = await fetch(`/api/modelos/${id}`, { method: "DELETE" });
-  if (!response.ok) throw new Error("Erro ao deletar modelo");
+  await apiFetch(`/modelos/${id}`, { method: "DELETE" });
 };
 
 export const updateModelo = async (
@@ -44,9 +39,8 @@ export const updateModelo = async (
     marca_id: number,
     imagem?: string
   ): Promise<Modelo> => {
-  const response = await fetch(`/api/modelos/${id}`, {
+  return apiFetch<Modelo>(`/modelos/${id}`, {
     method: "PUT",
-    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ 
       nome, 
       numero_portas,
@@ -56,6 +50,4 @@ export const updateModelo = async (
       imagem
     }),
   });
-  if (!response.ok) throw new Error("Erro ao atualizar modelo");
-  return response.json();
 };

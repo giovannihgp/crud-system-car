@@ -1,12 +1,17 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CarroController;
 use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\ModeloController;
 use App\Http\Controllers\DescricaoController;
 use App\Http\Controllers\DescricaoMarcaController;
+// use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
+use App\Http\Middleware\IsAdmin;
+use App\Models\User;
 
 // use App\Models\Marca;
 // use App\Models\Modelo;
@@ -21,9 +26,53 @@ use App\Http\Controllers\DescricaoMarcaController;
 //     return response()->json(['message' => 'Seed concluído com sucesso!']);
 // });
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// Route::post('register', 'UserController@store')->name('users.store');
+// Route::post('/register', [UserController::class, 'store'])->name('users.store');
+
+// Route::post('/login', [AuthController::class, 'login']);
+// Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::post("/login", [AuthController::class, "login"]);
+
+Route::middleware("auth:sanctum")->group(function() {
+    Route::get("/user", function (Request $request) {
+        return $request->user();
+    });
+
+    Route::post("/logout", [AuthController::class, "logout"]);
+});
+
+
+// Route::get('/user', function () {
+//     Route::get('/modelos', [ModeloController::class, 'index_modelo']);
+//     Route::post('/modelos', [ModeloController::class, 'store_modelo']);
+//     Route::get('/modelos/{id}', [ModeloController::class, 'show_modelo']);
+//     Route::put('/modelos/{id}', [ModeloController::class, 'update_modelo']);
+//     Route::delete('/modelos/{id}', [ModeloController::class, 'destroy_modelo']);
+
+//     Route::get('/marca', [MarcaController::class, 'index_marca']);
+//     Route::post('/marca', [MarcaController::class, 'store_marca']);
+//     Route::get('/marca/{id}', [MarcaController::class, 'show_marca']);
+//     Route::put('/marca/{id}', [MarcaController::class, 'update_marca']);
+//     Route::delete('/marca/{id}', [MarcaController::class, 'destroy_marca']);
+// })->middleware('auth');
+
+// Route::get('/user', function () {
+//     Route::get('/modelos', [ModeloController::class, 'index_modelo']);
+//     Route::post('/modelos', [ModeloController::class, 'store_modelo']);
+//     Route::get('/modelos/{id}', [ModeloController::class, 'show_modelo']);
+//     Route::put('/modelos/{id}', [ModeloController::class, 'update_modelo']);
+//     Route::delete('/modelos/{id}', [ModeloController::class, 'destroy_modelo']);
+
+//     Route::get('/marca', [MarcaController::class, 'index_marca']);
+//     Route::post('/marca', [MarcaController::class, 'store_marca']);
+//     Route::get('/marca/{id}', [MarcaController::class, 'show_marca']);
+//     Route::put('/marca/{id}', [MarcaController::class, 'update_marca']);
+//     Route::delete('/marca/{id}', [MarcaController::class, 'destroy_marca']);
+// })->middleware(IsAdmin::class);
 
 Route::prefix('carros')->group(function() {
     Route::get('/', [CarroController::class, 'index']);
@@ -38,21 +87,23 @@ Route::prefix('carros')->group(function() {
 // Route::apiResource('descricoes', DescricaoController::class);
 // Route::apiResource('descricaoMarca', DescricaoMarcaController::class);
 
-Route::prefix('marca')->group(function () {
-    Route::get('/', [MarcaController::class, 'index_marca']);
-    Route::post('/', [MarcaController::class, 'store_marca']);
-    Route::get('{id}', [MarcaController::class, 'show_marca']);
-    Route::put('{id}', [MarcaController::class, 'update_marca']);
-    Route::delete('{id}', [MarcaController::class, 'destroy_marca']);
-});
+// Route::middleware('auth:sanctum')->get('/marca', [MarcaController::class, 'index_marca']);
 
-Route::prefix('modelos')->group(function () {
-    Route::get('/', [ModeloController::class, 'index_modelo']);
-    Route::post('/', [ModeloController::class, 'store_modelo']);
-    Route::get('{id}', [ModeloController::class, 'show_modelo']);
-    Route::put('{id}', [ModeloController::class, 'update_modelo']);
-    Route::delete('{id}', [ModeloController::class, 'destroy_modelo']);
-});
+// Route::prefix('marca')->group(function () {
+//     Route::get('/', [MarcaController::class, 'index_marca']);
+//     Route::post('/', [MarcaController::class, 'store_marca']);
+//     Route::get('{id}', [MarcaController::class, 'show_marca']);
+//     Route::put('{id}', [MarcaController::class, 'update_marca']);
+//     Route::delete('{id}', [MarcaController::class, 'destroy_marca']);
+// });
+
+// Route::prefix('modelos')->group(function () {
+//     Route::get('/', [ModeloController::class, 'index_modelo']);
+//     Route::post('/', [ModeloController::class, 'store_modelo']);
+//     Route::get('{id}', [ModeloController::class, 'show_modelo']);
+//     Route::put('{id}', [ModeloController::class, 'update_modelo']);
+//     Route::delete('{id}', [ModeloController::class, 'destroy_modelo']);
+// });
 
 Route::prefix('descricoes')->group(function () {
     Route::get('/', [DescricaoController::class, 'index_descricao']);
@@ -70,16 +121,20 @@ Route::prefix('descricao_marca')->group(function () {
     Route::delete('{id}', [DescricaoMarcaController::class, 'destroy_descricao_marca']);
 });
 
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout']);
+// Route::post('/login', [AuthController::class, 'login']);
+// Route::post('/logout', [AuthController::class, 'logout']);
 
-// Route::middleware('auth:sanctum')->group(function () {
-    
-//     Route::get('/modelos', [ModeloController::class, 'index_modelo']);
+// Route::middleware('auth')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/modelos', [ModeloController::class, 'index_modelo']);
+    Route::post('/modelos', [ModeloController::class, 'store_modelo']);
+    Route::get('/modelos/{id}', [ModeloController::class, 'show_modelo']);
+    Route::put('/modelos/{id}', [ModeloController::class, 'update_modelo']);
+    Route::delete('/modelos/{id}', [ModeloController::class, 'destroy_modelo']);
 
-//     Route::middleware('admin')->group(function () {
-//         Route::post('/modelos', [ModeloController::class, 'store_modelo']);
-//         Route::put('/modelos/{id}', [ModeloController::class, 'update_modelo']);
-//         Route::delete('/modelos/{id}', [ModeloController::class, 'destroy_modelo']);
-//     });
-// });
+    Route::get('/marca', [MarcaController::class, 'index_marca']);
+    Route::post('/marca', [MarcaController::class, 'store_marca']);
+    Route::get('/marca/{id}', [MarcaController::class, 'show_marca']);
+    Route::put('/marca/{id}', [MarcaController::class, 'update_marca']);
+    Route::delete('/marca/{id}', [MarcaController::class, 'destroy_marca']);
+});

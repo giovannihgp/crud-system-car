@@ -1,13 +1,13 @@
-// import { User } from "../types/user";
+import { apiFetch } from "./client";
+import type { User } from "../types/user";
 
+export async function getUsers(): Promise<User[]> {
+    return await apiFetch<User[]>("/users");
+}
 
-// axios.get("/modelos", {
-//     headers: {
-//         Authorization: `Bearer ${token}`
-//     }
-// });
-// axios.post("/logout", {}, {
-//     headers: {
-//         Authorization: `Bearer ${token}`
-//     }
-// });
+export async function createUser(data: Partial<User>): Promise<User> {
+    return await apiFetch<User>("/users", {
+        method: "POST",
+        body: JSON.stringify(data),
+    });
+}

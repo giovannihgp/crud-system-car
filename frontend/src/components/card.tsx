@@ -23,7 +23,7 @@ export const cardVariants = tv({
 		},
 	},
 	defaultVariants: {
-		size: "md",
+		size: "none",
 		variant: "none",
 	},
 });

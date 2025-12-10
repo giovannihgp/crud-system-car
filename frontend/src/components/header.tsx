@@ -14,6 +14,7 @@ export default function Header() {
         { name: "Marcas", path: "/marcas" },
         { name: "Modelos", path: "/modelos" },
         { name: "Login", path: "/conta" },
+        { name: "Logout", path: "/sair" },
     ];
 
     return (
