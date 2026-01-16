@@ -15,10 +15,8 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->check() || auth()->user()->role !== 1) {
-            return response()->json([
-                'message' => 'Acesso negado'
-            ], 403);
+        if (!auth()->user() || !auth()->user()->is_admin) {
+            return response()->json(['error' => 'Não autorizado.'], 403);
         }
 
         return $next($request);

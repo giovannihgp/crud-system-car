@@ -15,7 +15,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             MarcaModeloSeeder::class,
-            AdminSeeder::class
+            RolePermissionSeeder::class,
+            AdminSeeder::class,
         ]);
     }
 }

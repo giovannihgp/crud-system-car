@@ -66,7 +66,11 @@ class MarcaController extends Controller
     public function update_marca(Request $request, $id)
     {
         $marca = Marca::findOrFail($id);
+
+        $this->authorize('update', $marca);
+
         $request->validate($marca->rules());
+
         $marca->update($request->all());
 
         return response()->json($marca, 200);

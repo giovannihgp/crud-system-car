@@ -12,6 +12,7 @@ return new class extends Migration
             $table->increments('id');
             $table->string('username', 73)->unique();
             $table->string('password');
+            $table->boolean('is_admin')->default(false);
             // $table->Integer('role');
             $table->timestamps();
         });

@@ -6,6 +6,10 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+// Route::middleware(['role:admin'])->get('/admin-test', function () {
+//     return 'ACESSO LIBERADO PARA ADMIN';
+// });
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
