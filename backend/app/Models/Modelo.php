@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Policies\ModeloPolicy;
+use App\Models\Marca;
+use App\Models\User;
+use App\Models\Descricao;
 
 class Modelo extends Model
 {
@@ -17,7 +21,12 @@ class Modelo extends Model
         'air_bag', 
         'abs', 
         'marca_id', 
-        'imagem'
+        'imagem',
+        'user_id'
+    ];
+
+    protected $policies = [
+        Modelo::class => ModeloPolicy::class,
     ];
 
     public function rules() {
@@ -30,6 +39,10 @@ class Modelo extends Model
             'marca_id' => 'required|exists:'.(new Marca)->getTable().',id',
             'imagem' => 'nullable|string',
         ];
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class);
     }
 
     public function marca() {

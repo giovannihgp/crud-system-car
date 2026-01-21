@@ -27,8 +27,4 @@ class Descricao extends Model
         return $this->belongsTo(Modelo::class);
     }
 
-    // public function marca() {
-    //     return $this->belongsTo(Marca::class);
-    //     # morphTo # belongsTo
-    // }
 }

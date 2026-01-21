@@ -19,9 +19,12 @@ class MarcaModeloSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         $marcas = [
-            ['id' => 1, 'nome' => 'Volkswagen'],
-            ['id' => 2, 'nome' => 'Hyndai'],
-            ['id' => 3, 'nome' => 'Ford'],
+            ['id' => 1, 'nome' => 'Volkswagen', 'user_id' => 1],
+            ['id' => 2, 'nome' => 'Hyndai', 'user_id' => 1],
+            ['id' => 3, 'nome' => 'Ford', 'user_id' => 1],
+            ['id' => 4, 'nome' => 'Bmw', 'user_id' => 2],
+            ['id' => 5, 'nome' => 'Fiat', 'user_id' => 2],
+            ['id' => 6, 'nome' => 'Carrinho', 'user_id' => 1],
         ];
 
         DB::table('marcas')->insert($marcas);
@@ -35,6 +38,7 @@ class MarcaModeloSeeder extends Seeder
                 'abs' => true, 
                 'marca_id' => 3,
                 'imagem' => 'ford_ka_1_0.png',
+                'user_id' => 1,
             ],
             [
                 'id' => 2, 
@@ -44,6 +48,7 @@ class MarcaModeloSeeder extends Seeder
                 'abs' => true, 
                 'marca_id' => 3,
                 'imagem' => 'ford_ka_sedan_1_0.png',
+                'user_id' => 1,
             ],
             [
                 'id' => 3, 
@@ -53,6 +58,7 @@ class MarcaModeloSeeder extends Seeder
                 'abs' => false, 
                 'marca_id' => 2,
                 'imagem' => 'hyundai_hb20_1_0.png',
+                'user_id' => 1,
             ],
             [
                 'id' => 4, 
@@ -62,6 +68,7 @@ class MarcaModeloSeeder extends Seeder
                 'abs' => true,
                 'marca_id' => 2,
                 'imagem' => 'hyundai_hb20s_1_0.png',
+                'user_id' => 1,
             ],
             [
                 'id' => 5, 
@@ -71,6 +78,7 @@ class MarcaModeloSeeder extends Seeder
                 'abs' => true, 
                 'marca_id' => 1,
                 'imagem' => 'volkswagen_gol_1_0.png',
+                'user_id' => 2,
             ],
             [
                 'id' => 6, 
@@ -80,6 +88,7 @@ class MarcaModeloSeeder extends Seeder
                 'abs' => false, 
                 'marca_id' => 1,
                 'imagem' => 'volkswagen_gol_1_6.png',
+                'user_id' => 2,
             ],
             [
                 'id' => 7,
@@ -88,7 +97,8 @@ class MarcaModeloSeeder extends Seeder
                  'air_bag' => true, 
                  'abs' => true, 
                  'marca_id' => 1,
-                 'imagem' => 'volkswagen_polo_1_0.png'
+                 'imagem' => 'volkswagen_polo_1_0.png',
+                 'user_id' => 2,
             ],
         ];
 

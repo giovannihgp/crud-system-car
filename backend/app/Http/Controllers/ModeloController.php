@@ -3,70 +3,61 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Modelo;
 use App\Models\Descricao;
+use App\Policies\ModeloPolicy;
 
 class ModeloController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index_modelo()
+    public function __construct()
     {
-        $modelos = Modelo::with(['marca', 'descricao'])->get();
-        return response()->json($modelos);
+        $this->authorizeResource(Marca::class, 'modelo');
+    }
+    
+    public function index_modelo()
+    {   
+        $this->authorize('viewAny', Modelo::class);
+
+        return Modelo::with(['marca', 'descricao'])->get();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store_modelo(Request $request)
     {
-        $modelo = new Modelo();
-        $request->validate((new Modelo)->rules());
-        $novoModelo = Modelo::create($request->all());
+        $this->authorize('create', Modelo::class);
 
-        return response()->json($novoModelo, 201);
+        $data = $request->validate((new Modelo)->rules());
+
+        $modelo = auth()->user()->modelos()->create($data);
+
+        return response()->json($modelo, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show_modelo($id)
+    public function show_modelo(Modelo $modelo)
     {
-        try {
-            $modelo = Modelo::with('marca')->findOrFail($id);
-            return response()->json($modelo, 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'error' => $e->getMessage(),
-                'mensagem' => 'Modelo não encontrado(ou não existe)'
-            ], 404);
-        }
-    }
-    //     public function marca($id) { $modelo = Modelo::with('marca')->findOrFail($id); return response()->json($modelo, 200); }
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update_modelo(Request $request, $id)
-    {
-        $modelo = Modelo::findOrFail($id);
-        $request->validate($modelo->rules());
-        $modelo->update($request->all());
+        $this->authorize('view', $modelo);
 
-        return response()->json($modelo, 200);
+        return response()->json($modelo->load(['marca', 'descricao']));
+    }
+   
+    public function update_modelo(Request $request, Modelo $modelo)
+    {
+        $this->authorize('update', $modelo);
+
+        $data = $request->validate($modelo->rules());
+        
+        $modelo->update($data);
+
+        return response()->json($modelo);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy_modelo($id)
+    public function destroy_modelo(Modelo $modelo)
     {
-        $modelo = Modelo::findOrFail($id);
+        $this->authorize('delete', $modelo);
+        
         $modelo->delete();
-
-        // return response()->json(null, 204);
-        return response()->json(['message' => 'Modelo removido com sucesso'], 200);
+       
+        return response()->json(['message' => 'Modelo removido com sucesso']);
     }
 }

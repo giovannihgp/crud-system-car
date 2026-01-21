@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Policies\MarcaPolicy;
+use App\Models\User;
+use App\Models\Marca;
+use App\Models\DescricaoMarca;
 
 class Marca extends Model
 {
@@ -11,12 +15,20 @@ class Marca extends Model
 
     protected $table = 'marcas';
 
-    protected $fillable = ['nome'];
+    protected $fillable = ['nome', 'user_id'];
+
+    protected $policies = [
+        Marca::class => MarcaPolicy::class,
+    ];
 
     public function rules() {
         return [
             'nome' => 'required|string|min:3|max:150|unique:marcas,nome',
         ];
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class);
     }
 
     public function modelos() {

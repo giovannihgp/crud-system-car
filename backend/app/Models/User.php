@@ -10,7 +10,8 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
-
+use App\Models\Marca;
+use App\Models\Modelo;
 
 class User extends Authenticatable
 {
@@ -20,21 +21,18 @@ class User extends Authenticatable
     use HasProfilePhoto;
     use TwoFactorAuthenticatable;
     
-
-    // protected $table = 'users';
-
     protected $fillable = [
         'username',
         'password',
-        // 'role',
     ];
 
-    public function username(){
-        return 'username';
+    public function marcas()
+    {
+        return $this->hasMany(Marca::class);
     }
 
+    public function modelos(){
+        return $this->hasMany(Modelo::class);
+    }
     
-    // public function __construct(User $user){ 
-    //     $this->user = $user; 
-    // }
 }

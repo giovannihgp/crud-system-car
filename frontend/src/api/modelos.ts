@@ -2,7 +2,7 @@ import type { Modelo } from "../types/modelo";
 import { apiFetch } from "./client";
 
 export const getModelos = async (): Promise<Modelo[]> => {
-  return apiFetch<Modelo[]>("/modelos", { method: "GET" });
+  return apiFetch<Modelo[]>("/modelo", { method: "GET" });
 };
 
 export const addModelo = async (
@@ -13,7 +13,7 @@ export const addModelo = async (
   marca_id: number,
   imagem?: string
 ): Promise<Modelo> => {
-  return apiFetch("/modelos", {
+  return apiFetch("/modelo", {
     method: "POST",
     body: JSON.stringify({ 
       nome, 
@@ -27,7 +27,7 @@ export const addModelo = async (
 };
 
 export const deleteModelo = async (id: number): Promise<void> => {
-  await apiFetch(`/modelos/${id}`, { method: "DELETE" });
+  await apiFetch(`/modelo/${id}`, { method: "DELETE" });
 };
 
 export const updateModelo = async (
@@ -39,7 +39,7 @@ export const updateModelo = async (
     marca_id: number,
     imagem?: string
   ): Promise<Modelo> => {
-  return apiFetch<Modelo>(`/modelos/${id}`, {
+  return apiFetch<Modelo>(`/modelo/${id}`, {
     method: "PUT",
     body: JSON.stringify({ 
       nome, 

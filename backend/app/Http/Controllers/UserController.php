@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
      
-    // public function store(StoreUser $request){}
     public function authenticate(Request $request){
         $credentials = $request->validate([
             'username' => ['required', 'username'],
