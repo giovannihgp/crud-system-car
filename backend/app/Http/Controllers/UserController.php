@@ -5,26 +5,75 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 // use App\Http\Requests\User\StoreUser;
-// use App\Models\User;
 
 class UserController extends Controller
 {
-     
-    public function authenticate(Request $request){
-        $credentials = $request->validate([
-            'username' => ['required', 'username'],
-            'password' => ['required'],
+    public function index_user()
+    {
+        return User::all();
+    }
+
+    public function store_user(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|min:6',
         ]);
 
-        if(Auth::attempt($credentials)) {
-            $request->session()->regenerate();
+        $data['password'] = Hash::make($data['password']);
 
-            return redirect()->intended('dashboard');
+        $user = User::create($data);
+
+        return response()->json($user, 201);
+    }
+
+
+    public function show_user(User $user)
+    {
+        $this->authorize('view', $user);
+
+        return $user;
+    }
+
+    public function update_user(Request $request, User $user)
+    {
+        $this->authorize('update', $user);
+
+        $data = $request->validate([
+            'username' => ['sometimes', 'unique:users,username,' . $user->id],
+        ]);
+
+        $user->update($data);
+
+        return $user;
+    }
+
+    public function update_password(Request $request)
+    {
+        $user = $request->user();
+
+        $data = $request->validate([
+            'current_password' => ['required'],
+            'password' => ['required', 'min:6', 'confirmed'],
+        ]);
+
+        if(!Hash::check($data['current_password'], $user->password)) {
+            return response()->json([
+                'message' => 'Senha atual incorreta'
+            ], 422);
         }
 
-        return back()->withErrors([
-            'username' => 'Credencias não encontradas'
-        ])->onlyInput('username');
+        $user->update([
+            'password' => Hash::make($data['password']),
+        ]);
+
+        return response()->json([
+            'message' => 'Senha atualizada'
+        ]);
     }
 }

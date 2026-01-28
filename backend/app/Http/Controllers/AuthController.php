@@ -10,15 +10,12 @@ class AuthController extends Controller
 {
     public function login(Request $request) {
 
-        $request->validate([
-            'username' => 'required',
-            'password' => 'required'
+        $data = $request->validate([
+            'username' => ['required'],
+            'password' => ['required'],
         ]);
 
-        if(!Auth::attempt([
-            'username' => $request->username,
-            'password' => $request->password,
-        ])) {
+        if(!Auth::attempt($data)) {
             return response()->json([
                 'message' => 'Credenciais inválidas.'
             ], 401);
@@ -26,20 +23,17 @@ class AuthController extends Controller
 
         $user = Auth::user();
 
-        $token = $user->createToken('auth_token')->plainTextToken;
-
         return response()->json([
-            'message' => 'Login realizado com sucesso.',
+            'token' => $user->createToken('api-token')->plainTextToken,
             'user' => $user,
-            'token' => $token
+            'roles' => $user->getRoleNames(),
         ]);
     }
 
     public function logout(Request $request) { 
+
         $request->user()->currentAccessToken()->delete();
 
-        return response()->json([
-            'message' => 'Logout realizado com sucesso'
-        ]);
+        return response()->json(['message' => 'Logout realizado!']);
     }
 }

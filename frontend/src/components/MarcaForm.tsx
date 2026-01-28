@@ -1,7 +1,7 @@
 import { useState } from "react";
 import LoadingSpinner from "./LoadingSpinner";
 import type { Marca } from "../types/marca";
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "../contexts/ThemeContext";
 
 interface MarcaFormProps {
     onAdd: (nome: string) => Promise<void>;
@@ -17,27 +17,27 @@ export default function MarcaForm({ onAdd, carregando, marcas } : MarcaFormProps
     const [erroNome, setErroNome] = useState("");
 
     const handleSubmit = async () => {
-    if (!nome.trim()) {
-        setErro("O nome da marca é obrigatório.");
-        setTimeout(() => setErro(""), 4000);
-        return;
-    }
+        if (!nome.trim()) {
+            setErro("O nome da marca é obrigatório.");
+            setTimeout(() => setErro(""), 4000);
+            return;
+        }
 
-    const existe = marcas.some(
-        (m) => m.nome.toLowerCase().trim() === nome.toLowerCase().trim()
-    );
+        const existe = marcas.some(
+            (m) => m.nome.toLowerCase().trim() === nome.toLowerCase().trim()
+        );
 
-    if (existe) {
-        setErroNome("Já existe uma marca com esse nome!");
-        setTimeout(() => setErroNome(""), 3000);
-        return;
-    }
+        if (existe) {
+            setErroNome("Já existe uma marca com esse nome!");
+            setTimeout(() => setErroNome(""), 3000);
+            return;
+        }
 
-    await onAdd(nome);
-    setNome("");
-    setSucesso("Marca criada com sucesso!");
-    setTimeout(() => setSucesso(""), 4000);
-};
+        await onAdd(nome);
+        setNome("");
+        setSucesso("Marca criada com sucesso!");
+        setTimeout(() => setSucesso(""), 4000);
+    };
 
     return (
         <>

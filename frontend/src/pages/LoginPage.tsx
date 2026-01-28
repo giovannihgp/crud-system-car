@@ -1,94 +1,105 @@
-import Card from "../components/card";
-import { useTheme } from "../context/ThemeContext";
-import React, { useState } from "react";
+import { useTheme } from "../contexts/ThemeContext";
+import { useAuth } from "../contexts/AuthProvider";
+import Loginform from "../components/LoginForm";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthProvider";
+import { useState } from "react";
+import NovaSenha from "../components/NovaSenha";
+import UsersList from "../components/UsersList";
 
 export default function LoginPage() {
     const { dark } = useTheme();
-    const { login } = useAuth();
-    const [username, setUser] = useState("");
-    const [password, setPass] = useState("");
-    const [erro, setErro] = useState("");
-    const [loading, setLoading] = useState(false);
+    const { user, login } = useAuth();
     const navigate = useNavigate();
+    const [menuSenha, setMenuSenha] = useState(false);
 
+    if(user) {
+        return (
+            <div className="min-h-screen p-8 mt-21">
+                <div 
+                    className={`p-8 rounded-3xl shadow-lg border max-w-3xl mx-auto mt-10
+                        ${dark ? "bg-zinc-600 border-neutral-500" : "border-gray-100 bg-white/80"}`
+                    }
+                >
+                    <div className="flex">
+                        <p className="text-2xl font-semibold p-5">Você já está logado</p>
+                        <button 
+                            onClick={() => setMenuSenha(!menuSenha)}
+                            className={`font-semibold text-amber-500 hover:text-amber-600 bg-transparent underline underline-offset-2 mt-1`}
+                        >
+                            Trocar Senha
+                        </button>
+                    </div>
+                    <button
+                        onClick={() => navigate("/sair")}
+                        className={`w-full py-2 font-bold rounded-full text-white bg-red-500 hover:bg-red-600`}
+                    >
+                        Sair
+                    </button>
+                    {user.id === 1 ? (
+                        <>
+                            <UsersList />
+                        </>
+                    ) : (
+                        <div>
+                            <ul className="space-y-2">
+                                <li key={user.id}
+                                    className="content-center px-4 py-2 rounded-lg border hover:shadow-md shadow-sm transition-all min-h-[61px]"
+                                >
+                                    <div className="flex flex-1 justify-between items-center">
+                                        <label>Nome:</label>
+                                        <div className="flex gap-3">
+                                            <span className="">{user.name}</span>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-1 justify-between items-center">
+                                        <label>Nome de Usuário:</label>
+                                        <div className="flex gap-3">
+                                            <span>{user.username}</span>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-1 justify-between items-center">
+                                        <label>E-Mail</label>
+                                        <div className="flex gap-3">
+                                            <span>{user.email}</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    )}
 
-    async function handleSubmit(e: React.FormEvent) {
-        e.preventDefault();
-        setErro("");
-        setLoading(true);
-
-        const ok = await login(username, password);
-
-        setLoading(false);
-
-        if(!ok) {
-            setErro("Usuário ou(e) senha inválido(s)");
-            return;
-        }
-        
-        navigate("/marcas");
+                    {menuSenha && (
+                        <div className="mt-5">
+                            <NovaSenha />
+                        </div>
+                    )}
+                </div>
+            </div>
+        );
     }
 
-  return (
-    <div className="min-h-screen p-8 mt-39">
-        <Card 
-            className={`mt-14 mb-5 p-10 max-w-4xl mx-auto shadow-xl rounded-3xl border backdrop-blur-sm 
+    return (
+        <div className="min-h-screen p-8 mt-30">
+            <div className={`rounded-3xl shadow-lg border max-w-4xl mx-auto mt-14 mb-5 p-10 backdrop-blur-sm
                 ${
-                    dark 
+                    dark
                         ? "bg-zinc-600 border-neutral-500"
-                        : "border-gray-100 bg-white/80"
-                }
-            `}
-        >
-            <p className="text-center font-bold text-2xl pb-7">Login</p>
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="flex-1 flex flex-col">
-                    <label className="text-sm font-semibold mb-1">Nome de Usuario:</label>
-                    <input
-                        value={username}
-                        onChange={(e) => setUser(e.target.value)}
-                        type="text"
-                        placeholder="Digite o seu Usuário"
-                        className={`border rounded-lg px-3 py-2 focus:outline-none transition-colors duration-200 ${
-                            dark
-                                ? "text-gray-200 placeholder-gray-300"
-                                : "text-gray-800 placeholder-gray-400"
-                            }`}
-                        required
-                    />
-                </div>
-                <div className="flex-1 flex flex-col my-2">
-                    <label className="text-sm font-semibold mb-1">Senha:</label>
-                    <input
-                        onChange={(e) => setPass(e.target.value)}
-                        value={password}
-                        type="password"
-                        placeholder="Digite sua senha"
-                        className={`border rounded-lg px-3 py-2 focus:outline-none transition-colors duration-200 ${
-                            dark
-                                ? "text-gray-200 placeholder-gray-300"
-                                : "text-gray-800 placeholder-gray-400"
-                            }`}
-                        required
-                    />
-                </div>
-                <button
-                    type="submit"
-                    disabled={loading}
-                    className={`w-full py-2 font-bold rounded-full text-white ${
-                        loading
-                            ? "bg-blue-300 cursor-not-allowed"
-                            : "bg-blue-600 hover:bg-blue-700"
-                        }`}
+                        : "border-gray-100 bg-white/80"        
+                    }
+                `}
+            >
+                <div className="flex px-1">
+                    <p className="font-medium px-2">Não tem uma conta?</p>
+                    <button 
+                        onClick={() => navigate("/registro")}
+                        className={`font-semibold text-teal-300 hover:text-teal-400 bg-transparent underline underline-offset-2`}
                     >
-                        {loading ? "Entrando..." : "Entrar"}
-                </button>
-                {erro && <p className="text-center text-red-600 font-semibold mt-2">{erro}</p>}
-            </form>
-        </Card>
-    </div>
-  );
+                        Registre-se
+                    </button>
+                </div>
+                <Loginform onSubmit={login} />
+            </div>
+            
+        </div>
+    );
 }

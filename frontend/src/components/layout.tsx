@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import Header from "./header";
 import MainContent from "./MainContent";
 import Footer from "./footer";
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "../contexts/ThemeContext";
 
 export default function LayoutMain() {
     const { dark } = useTheme();

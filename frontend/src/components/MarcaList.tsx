@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import type { Marca } from "../types/marca";
 import type { Modelo } from "../types/modelo";
 import { marcaService } from "../services/marcaService";
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "../contexts/ThemeContext";
 
 interface MarcaListProps {
     marcas: Marca[];
@@ -89,7 +89,7 @@ export default function MarcaList({ marcas, modelos, setMarcas, children }: Marc
                                         : "bg-white/80 border-gray-100 hover:bg-gray-50"
                                 }`
                             }
-                            >
+                        >
                             {editandoId === m.id ? (
                                 <div className="flex flex-1 items-center gap-2">
                                     <input

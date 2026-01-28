@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import type { Marca } from "../types/marca";
 import LoadingSpinner from "./LoadingSpinner";
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "../contexts/ThemeContext";
 
 interface ModeloFormProps {
     marcas: Marca[];

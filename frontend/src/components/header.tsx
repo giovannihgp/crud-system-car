@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "../contexts/ThemeContext";
 
 export default function Header() {
     const location = useLocation();
@@ -13,8 +13,7 @@ export default function Header() {
         { name: "Mais Sobre", path: "/maisSobre" },
         { name: "Marcas", path: "/marcas" },
         { name: "Modelos", path: "/modelos" },
-        { name: "Login", path: "/conta" },
-        { name: "Logout", path: "/sair" },
+        { name: "Conta", path: "/login" },
     ];
 
     return (
@@ -79,16 +78,6 @@ export default function Header() {
                         );
                     })}
                 </nav>
-                <button
-                    // onClick={<Link />}
-                    className={
-                        dark
-                        ? "bg-violet-500 text-gray-300 px-4 py-2 rounded"
-                        : "bg-indigo-600 text-white px-4 py-2 rounded-3xl"
-                    }
-                >
-                    Login
-                </button>
             </div>
 
             {menuOpen && (

@@ -6,8 +6,10 @@ import PageHome from './pages/page-home';
 import PageBlog from "./pages/BlogPage";
 import LoginPage from "./pages/LoginPage";
 import LogoutPage from "./pages/LogoutPage";
-import { AuthProvider } from "./context/AuthProvider";
+import { AuthProvider } from "./contexts/AuthProvider";
 import PrivateRoute from "./routes/PrivateRoute";
+import RegisterPage from "./pages/RegisterPage";
+import AccountPaga from "./pages/AccountPage";
 
 export default function App() {
 
@@ -38,8 +40,10 @@ export default function App() {
               } 
             />
             
-            <Route path="conta" element={<LoginPage />} />
+            <Route path="login" element={<LoginPage />} />
             <Route path="sair" element={<LogoutPage />} />
+            <Route path="registro" element={<RegisterPage />} />
+            <Route path="conta" element={<AccountPaga />} />
             <Route path="*" element={<PageHome />} />
             
           </Route>

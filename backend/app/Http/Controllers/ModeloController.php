@@ -13,7 +13,7 @@ class ModeloController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(Marca::class, 'modelo');
+        $this->authorizeResource(Modelo::class, 'modelo');
     }
     
     public function index_modelo()

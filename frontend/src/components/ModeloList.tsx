@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import type { Modelo } from "../types/modelo";
 import type { Marca } from "../types/marca";
 import { modeloService } from "../services/modeloService";
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "../contexts/ThemeContext";
 
 interface ModeloListProps {
     modelos: Modelo[];

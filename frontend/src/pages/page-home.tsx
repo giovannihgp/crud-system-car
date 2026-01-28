@@ -5,7 +5,7 @@ import type { Modelo } from "../types/modelo";
 import { useEffect, useState } from "react";
 import { getModelos } from "../api/modelos";
 import { getMarcas } from "../api/marcas";
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "../contexts/ThemeContext";
 
 export default function PageHome() {
     const { dark } = useTheme();

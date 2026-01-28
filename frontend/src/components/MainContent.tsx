@@ -1,7 +1,7 @@
 import React from "react";
 import { tv, type VariantProps } from "tailwind-variants";
 import { clsx } from "clsx";
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "../contexts/ThemeContext";
 
 export const mainVariants = tv({
     base: "w-full transition-colors",

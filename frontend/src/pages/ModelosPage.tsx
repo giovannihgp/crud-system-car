@@ -7,7 +7,7 @@ import ModeloForm from "../components/ModeloForm";
 import ModeloList from "../components/ModeloList";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Paginacao from "../components/Paginacao";
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "../contexts/ThemeContext";
 
 export default function ModelosPage() {
     const { dark } = useTheme();

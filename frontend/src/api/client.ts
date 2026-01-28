@@ -4,6 +4,7 @@ export async function apiFetch<T>(url: string, options: RequestInit = {}): Promi
     const response = await fetch(`/api${url}`, {
         credentials: "include",
         headers: {
+            "Accept": "application/json",
             "Content-Type": "application/json",
             ...(token && { Authorization: `Bearer ${token}` }),
             ...(options.headers || {})
@@ -11,9 +12,10 @@ export async function apiFetch<T>(url: string, options: RequestInit = {}): Promi
         ...options
     });
 
-    if (!response.ok) throw new Error(await response.text() || "Erro na requisição");
-    
-    // if (response.status === 204) return {} as T;
+    if (!response.ok) {
+        const error = await response.json().catch(() => null);
+        throw error ?? new Error("Erro na requisição");
+    }
 
     return response.json() as Promise<T>;
 }

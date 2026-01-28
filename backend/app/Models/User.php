@@ -12,6 +12,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use App\Models\Marca;
 use App\Models\Modelo;
+use App\Policies\UserPolicy;
 
 class User extends Authenticatable
 {
@@ -22,8 +23,15 @@ class User extends Authenticatable
     use TwoFactorAuthenticatable;
     
     protected $fillable = [
+        'name',
         'username',
+        'email',
         'password',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
     ];
 
     public function marcas()

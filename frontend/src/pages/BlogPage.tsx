@@ -1,5 +1,5 @@
 import Card from "../components/card";
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "../contexts/ThemeContext";
 
 export default function PageBlog() {
     const { dark } = useTheme();

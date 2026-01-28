@@ -6,7 +6,7 @@ import MarcaForm from "../components/MarcaForm";
 import MarcaList from "../components/MarcaList";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Paginacao from "../components/Paginacao";
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "../contexts/ThemeContext";
 
 export default function MarcasPage() {
     const { dark } = useTheme();
@@ -23,11 +23,11 @@ export default function MarcasPage() {
     useEffect(() => {
         const load = async () => {
             try {
-            const { marcas, modelos } = await marcaService.carregarTudo();
-            setMarcas(marcas);
-            setModelos(modelos);
+                const { marcas, modelos } = await marcaService.carregarTudo();
+                setMarcas(marcas);
+                setModelos(modelos);
             } finally {
-            setLoading(false);
+                setLoading(false);
             }
         };
         load();
@@ -63,7 +63,6 @@ export default function MarcasPage() {
                     }
                 `}
             >
-                
                 <h1 className="text-2xl font-semibold mb-4">Cadastrar Marcas</h1>
                 <MarcaForm 
                     onAdd={handleAdd} 

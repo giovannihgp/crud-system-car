@@ -29,14 +29,18 @@ class AdminSeeder extends Seeder
         ]);
 
         $admin = User::create([
+            'name' => 'ADMIN',
             'username' => 'admin',
             'password' => Hash::make('123'),
+            'email' => 'admin@gazin.com.br',
             'is_admin' => true,
         ]);
         
         $user = User::create([
+            'name' => 'Usuario',
             'username' => 'user',
             'password' => Hash::make('123'),
+            'email' => 'user@gazin.com.br',
         ]);
 
         $admin->assignRole($adminRole);
