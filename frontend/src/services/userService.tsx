@@ -1,4 +1,4 @@
-import { getUsers, createUser, updateUser, changePassword, getUser } from "../api/users";
+import { getUsers, createUser, changePassword, getUser, updateUserPerfil, updateUserAdmin } from "../api/users";
 import type { User } from "../types/user";
 
 export const userService = {
@@ -15,8 +15,12 @@ export const userService = {
         return await createUser(data);
     },
     
-    async atualizar(id: number, username: string): Promise<User> {
-        return updateUser(id, username);
+    async atualizarPerfil(data: Partial<User>) {
+        return updateUserPerfil(data);
+    },
+
+    async atualizarPorAdmin(id: number, data: Partial<User>) {
+        return updateUserAdmin(id, data);
     },
 
     async mudarSenha(

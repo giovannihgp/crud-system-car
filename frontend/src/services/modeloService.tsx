@@ -6,7 +6,7 @@ export const modeloService = {
     return await getModelos();
   },
 
-  async adicionar(dados: Omit<Modelo, "id" | "marca">): Promise<Modelo> {
+  async adicionar(dados: Omit<Modelo, "id" | "user_id">): Promise<Modelo> {
     const { nome, numero_portas, air_bag, abs, marca_id, imagem } = dados;
     return await addModelo(nome, numero_portas, air_bag, abs, marca_id, imagem);
   },
@@ -15,7 +15,7 @@ export const modeloService = {
     return await deleteModelo(id);
   },
 
-  async atualizar(id: number, dados: Omit<Modelo, "id" | "marca">): Promise<Modelo> {
+  async atualizar(id: number, dados: Omit<Modelo, "id" | "user_id">): Promise<Modelo> {
     const { nome, numero_portas, air_bag, abs, marca_id, imagem } = dados;
     return await updateModelo(id, nome, numero_portas, air_bag, abs, marca_id, imagem);
   },

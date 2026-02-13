@@ -2,6 +2,7 @@ import { useState } from "react";
 import LoadingSpinner from "./LoadingSpinner";
 import type { Marca } from "../types/marca";
 import { useTheme } from "../contexts/ThemeContext";
+import { Plus  } from "lucide-react";
 
 interface MarcaFormProps {
     onAdd: (nome: string) => Promise<void>;
@@ -39,31 +40,39 @@ export default function MarcaForm({ onAdd, carregando, marcas } : MarcaFormProps
         setTimeout(() => setSucesso(""), 4000);
     };
 
+    const inputBase = "border rounded-lg px-3 py-2 focus:outline-none transition-colors duration-200 w-full focus:ring-2 placeholder:text-md";
+    const inputLight = "border-gray-300 focus:border-indigo-500 focus:ring-indigo-400 text-gray-800 placeholder-gray-500 bg-gray-100";
+    const inputDark = "border-neutral-500 focus:border-purple-700 focus:ring-purple-500 text-gray-200 placeholder-gray-400 bg-zinc-800";
+    const inputErroLight = "border-red-600 ring-2 ring-red-400 placeholder-red-600 bg-red-50 placeholder:font-medium";
+    const inputErroDark = "border-red-400 ring-2 ring-red-200 placeholder-red-500 bg-red-300/20 placeholder:font-medium";
+
+    const inputClass = (hasError?: boolean) =>
+        `${inputBase} ${
+            hasError
+                ? dark
+                    ? inputErroDark
+                    : inputErroLight
+                : dark
+                    ? inputDark
+                    : inputLight
+    }`;
+
     return (
         <>
         <div className="flex flex-col sm:flex-row items-start sm:items-end gap-3 mb-2">
             <div className="flex-1 flex flex-col">
-                <label className="text-sm font-semibold mb-1">Nome da Marca:</label>
+                <label className={`text-sm font-semibold mb-1 ${dark ? "text-gray-300" : "text-gray-500"}`}>Nome da Marca:</label>
                 <input
                     value={nome}
                     onChange={(e) => setNome(e.target.value)}
-                    placeholder={erro ? "O nome da marca é obrigatório." : "Digite o nome da marca."} 
-                    className={`border rounded-lg px-3 py-2 focus:outline-none transition-colors duration-200
-                        ${
-                            !nome.trim() && erro
-                                ? dark
-                                    ? "border-red-400 ring-2 ring-red-200 placeholder-red-500 focus:placeholder-red-500"
-                                    : "border-red-500 ring-2 ring-red-300 placeholder-red-700 focus:placeholder-red-600"
-                                : dark
-                                    ? "border-neutral-500 focus:border-violet-400 focus:ring-2 focus:ring-violet-300"
-                                    : "border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-400"
+                    onKeyDown={(e) => {
+                        if(e.key === "Enter"){
+                            e.preventDefault();
+                            handleSubmit();
                         }
-                        ${
-                            dark
-                                ? "text-gray-200 placeholder-gray-300"
-                                : "text-gray-800 placeholder-gray-400"
-                        }`
-                    }
+                    }}
+                    placeholder={erro ? "O nome da marca é obrigatório." : "Digite uma nova marca..."} 
+                    className={inputClass(!nome.trim() && !!erro || !!erroNome)}
                 />
             </div>
             <div>
@@ -90,7 +99,10 @@ export default function MarcaForm({ onAdd, carregando, marcas } : MarcaFormProps
                             Adicionando...
                         </span>
                     ) : (
-                        "Adicionar"
+                        <div className="flex items-center justify-center gap-2">
+                            <Plus className="w-5 h-5 text-white"/>
+                            <p>Adicionar</p>
+                        </div>
                     )}
                 </button>
             </div>
@@ -100,7 +112,7 @@ export default function MarcaForm({ onAdd, carregando, marcas } : MarcaFormProps
                 <p 
                     className={`rounded-md p-2 mb-4 text-center font-semibold text-sm border
                         ${dark 
-                            ? "text-red-600 bg-red-100 border-red-300" 
+                            ? "text-red-400 bg-red-300/20 border-red-300" 
                             : "text-red-600 bg-red-50 border border-red-200"
                         }
                     `}

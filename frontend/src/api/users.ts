@@ -17,10 +17,17 @@ export async function createUser(data: {
     });
 }
 
-export async function updateUser(id: number, username: string): Promise<User> {
+export async function updateUserPerfil(data: Partial<User>) {
+    return apiFetch<User>('/user/perfil', {
+        method: "PUT",
+        body: JSON.stringify(data),
+    });
+}
+
+export async function updateUserAdmin(id: number, data: Partial<User>) {
     return apiFetch<User>(`/users/${id}`, {
         method: "PUT",
-        body: JSON.stringify({ username }),
+        body: JSON.stringify(data),
     });
 }
 

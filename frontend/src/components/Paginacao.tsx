@@ -32,10 +32,10 @@ export default function Paginacao({ totalItems, itemsPorPage, paginaAtual, setPa
                         blurAfter(e);
                     }}
                     disabled={paginaAtual === 1}
-                    className={`px-3 py-1 rounded disabled:opacity-50 focus:outline-none focus:ring-2 hover:shadow-md transition-all border 
+                    className={`px-3 py-1 rounded disabled:opacity-70 focus:outline-none focus:ring-2 hover:shadow-md transition-all border cursor-pointer disabled:cursor-not-allowed
                         ${dark 
-                            ? "bg-zinc-500 focus:ring-violet-400 border-zinc-400" 
-                            : "bg-gray-200 focus:ring-indigo-500 hover:bg-gray-300"
+                            ? "bg-gray-600 focus:ring-violet-400 border-zinc-500" 
+                            : "bg-gray-200 focus:ring-indigo-500 border-gray-300 hover:bg-gray-300"
                         }`
                     }
                 >
@@ -50,10 +50,10 @@ export default function Paginacao({ totalItems, itemsPorPage, paginaAtual, setPa
                         blurAfter(e);
                     }}
                     disabled={paginaAtual === totalPagina}
-                    className={`px-3 py-1 rounded disabled:opacity-50 focus:outline-none focus:ring-2 hover:shadow-md transition-all border
+                    className={`px-3 py-1 rounded disabled:opacity-70 focus:outline-none focus:ring-2 hover:shadow-md transition-all border cursor-pointer disabled:cursor-not-allowed
                         ${dark 
-                            ? "bg-zinc-500 focus:ring-violet-400 border-zinc-400" 
-                            : "bg-gray-200 focus:ring-indigo-500 border-gray-300"
+                            ? "bg-gray-600 focus:ring-violet-400 border-zinc-500" 
+                            : "bg-gray-200 focus:ring-indigo-500 border-gray-300 hover:bg-gray-300"
                         }`
                     }
                 >

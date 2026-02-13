@@ -1,19 +1,42 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, NavLink } from "react-router-dom";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { useTheme } from "../contexts/ThemeContext";
+import { useAuth } from "../contexts/AuthProvider";
+import { Car, Moon, Sun } from "lucide-react";
 
 export default function Header() {
     const location = useLocation();
     const [menuOpen, setMenuOpen] = useState(false);
     const { dark, toggleTheme } = useTheme();
+    const { user } = useAuth();
+    const navClass = ({ isActive }: { isActive: boolean }) =>
+    `font-semibold text-lg transition-colors ${
+        isActive
+            ? dark
+                ? "text-violet-500 underline underline-offset-4"
+                : "text-indigo-600 underline underline-offset-4"
+            : dark
+                ? "text-gray-300 hover:text-violet-500"
+                : "text-gray-700 hover:text-indigo-600"
+    }`;
+
+    const navClassMenu = ({ isActive }: { isActive: boolean}) =>
+    `block text-lg font-medium transition-colors ${
+        isActive
+            ? dark
+                ? "text-violet-500 underline underline-offset-4"
+                : "text-indigo-600 underline underline-offset-4"
+            : dark 
+                ? "text-gray-300 hover:text-violet-500"
+                : "text-gray-700 hover:text-indigo-600"
+    }`;
 
     const links = [
         { name: "Home", path: "/" },
         { name: "Mais Sobre", path: "/maisSobre" },
         { name: "Marcas", path: "/marcas" },
         { name: "Modelos", path: "/modelos" },
-        { name: "Conta", path: "/login" },
     ];
 
     return (
@@ -30,21 +53,15 @@ export default function Header() {
                     className={
                         dark 
                         ? "text-2xl font-extrabold tracking-tight text-violet-500 hover:opacity-90 transition-opacity"
-                        : "text-2xl font-extrabold tracking-tight text-indigo-600 hover:opacity-90 transition-opacity"
+                        : "text-2xl font-extrabold tracking-tight text-violet-500 hover:opacity-90 transition-opacity"
                     }
                 >
-                    Auto<span className={dark ? "text-gray-400" : "text-gray-500"}>Hub</span>
+                    <div className="flex">
+                        <Car className={`h-10 w-10 pb-1 me-1 ${dark ? "text-violet-500" : "text-indigo-600"}`}/>
+                        <p className={`pt-1 ${dark ? "text-violet-500" : "text-indigo-600"}`}>Auto<span className={dark ? "text-gray-400" : "text-gray-500"}>Hub</span></p>
+                    </div>
                 </Link>
-                <button
-                    onClick={toggleTheme}
-                    className={
-                        dark
-                        ? "bg-white text-black px-4 py-2 rounded"
-                        : "bg-black text-white px-4 py-2 rounded"
-                    }
-                >
-                    { dark ? "☀️ Light" : "🌙 Dark"}
-                </button>
+                
                 <button
                     onClick={() => setMenuOpen(!menuOpen)}
                     className={
@@ -77,7 +94,33 @@ export default function Header() {
                             </Link>
                         );
                     })}
+                    {!user ? (
+                        <NavLink
+                            to="/login"
+                            className={navClass}>
+                            Login
+                        </NavLink>
+                    ) : (
+                        <NavLink
+                            to="/conta"
+                            className={navClass}
+                        >
+                            Conta
+                        </NavLink>
+                    )}
                 </nav>
+                <button
+                    onClick={toggleTheme}
+                    className={`rounded-full border p-2 shadow-sm group ${dark 
+                        ? "bg-zinc-800/85 border-gray-700 hover:bg-zinc-500/10 hover:border-zinc-900" 
+                        : "bg-white/50 border-gray-300 hover:bg-gray-100/50 hover:border-gray-200"}`}
+                >
+                    {dark ? (
+                        <Moon className="w-4 h-4 text-blue-700 group-hover:text-blue-600" />
+                    ) : (
+                        <Sun className="w-4 h-4 text-yellow-400 group-hover:text-yellow-300" />
+                    )}
+                </button>
             </div>
 
             {menuOpen && (
@@ -109,6 +152,23 @@ export default function Header() {
                             </Link>
                         );
                     })}
+                    {!user ? (
+                        <NavLink
+                            to="/login"
+                            onClick={() => setMenuOpen(false)}
+                            className={navClassMenu}
+                        >
+                            Login
+                        </NavLink>
+                    ) : (
+                        <NavLink
+                            to="/conta"
+                            onClick={() => setMenuOpen(false)}
+                            className={navClassMenu}
+                        >
+                            Conta
+                        </NavLink>
+                    )}
                 </div>
             )}
         </header>

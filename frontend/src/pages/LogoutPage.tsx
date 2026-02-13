@@ -7,7 +7,7 @@ export default function LogoutPage() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        logout().finally(() => navigate("/conta"));
+        logout().finally(() => navigate("/login"));
     }, []);
 
 return null;

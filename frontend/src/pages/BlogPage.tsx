@@ -8,7 +8,7 @@ export default function PageBlog() {
         <Card 
             className={`mt-14 mb-5 p-10 max-w-4xl mx-auto shadow-xl rounded-3xl border backdrop-blur-sm ${
                         dark 
-                            ? "bg-zinc-600 border-neutral-500"
+                            ? "bg-zinc-700/50 border-neutral-500"
                             : "border-gray-100 bg-white/80"
                         }
             `}

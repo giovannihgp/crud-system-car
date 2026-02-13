@@ -1,49 +1,41 @@
-import { userService } from "../services/userService";
 import type { User } from "../types/user";
-import { useState, useEffect } from "react";
+import { useTheme } from "../contexts/ThemeContext";
 
-export default function UsersList() {
-    const [users, setUsers] = useState<User[]>([]);
+interface UsersListProps {
+    users: User[];
+    onSelect: (user: User) => void;
+}
 
-    useEffect(() => {
-        const load = async () => {
-            const users = await userService.listar();
-            setUsers(users);
-        };
-        load();
-    }, []);
-
+export default function UsersList({ users, onSelect }: UsersListProps) {
+    const { dark } = useTheme();
+    const cardLight = "border-gray-300 bg-white/80 divide-gray-300";
+    const cardDark = "bg-zinc-700/50 border-neutral-600 divide-gray-600";
+    const labelLight = "text-gray-700";
+    const labelDark = "text-gray-400";
     return (
-        <div>
-            <ul className="space-y-2">
-                {users.map((u) => {
-                    return (
-                        <li
-                            key={u.id}
-                            className="content-center px-4 py-2 rounded-lg border hover:shadow-md shadow-sm transition-all min-h-[61px]"
-                        >
-                            <div className="flex flex-1 justify-between items-center">
-                                <label>Nome:</label>
-                                <div className="flex gap-3">
-                                    <span className="">{u.name}</span>
-                                </div>
-                            </div>
-                            <div className="flex flex-1 justify-between items-center">
-                                <label>Nome de Usuário:</label>
-                                <div className="flex gap-3">
-                                    <span className="">{u.username}</span>
-                                </div>
-                            </div>
-                            <div className="flex flex-1 justify-between items-center">
-                                <label>E-Mail:</label>
-                                <div className="flex gap-3">
-                                    <span className="">{u.email}</span>
-                                </div>
-                            </div>
-                        </li>
-                    )
-                })}
-            </ul>
-        </div>
+        <ul className={`w-full max-w-xl mx-auto rounded-lg border divide-y ${dark ? cardDark : cardLight}`}>
+            {users.map((u) => (
+                <li
+                    key={u.id}
+                    onClick={() => onSelect(u)}
+                    className="cursor-pointer hover:bg-gray-100/35 px-3 py-2 shadow-sm transition-all hover:shadow-md"
+                >
+                    <div className="grid grid-cols-3">
+                        <p className="font-bold">Nome:</p>
+                        <p className={`col-span-2 text-right ${dark ? labelDark : labelLight}`}>{u.name}</p>
+                        <p className="font-bold">Usuário:</p>
+                        <p className={`col-span-2 text-right ${dark ? labelDark : labelLight}`}>{u.username}</p>
+                        <p className="font-bold">E-mail:</p>
+                        <p className={`col-span-2 text-right ${dark ? labelDark : labelLight}`}>{u.email}</p>
+                    </div>
+                </li>
+            ))}
+        </ul>
+        // w-full
+        // max-w-xl
+        // mx-auto
+        // rounded-lg
+        // border
+        // divide-y
     );
 }

@@ -6,4 +6,5 @@ export interface Modelo {
     abs: boolean;
     marca_id: number;
     imagem: string;
+    user_id: number;
 }

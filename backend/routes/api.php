@@ -14,8 +14,6 @@ use App\Http\Middleware\IsAdmin;
 use App\Models\User;
 use App\Models\Marca;
 
-// use App\Models\Modelo;
-
 Route::post("/login", [AuthController::class, "login"]);
 Route::post('/users', [UserController::class, 'store_user']);
 
@@ -24,14 +22,11 @@ Route::middleware("auth:sanctum")->group(function() {
     Route::get('/me', fn (Request $r) => $r->user());
     Route::get('/users', [UserController::class, 'index_user']);    
     Route::get('/users/{user}', [UserController::class, 'show_user']);
+    Route::put('/user/perfil', [UserController::class, 'updatePerfil']);
     Route::put('/users/{user}', [UserController::class, 'update_user']);
+    Route::put('/novaSenha', [UserController::class, 'update_password']);
 
 });
-
-Route::middleware("auth:sanctum")->put("/novaSenha", [UserController::class, "update_password"]);
-
-Route::get('/marca', [MarcaController::class, 'index_marca']);
-Route::get('/marca', [MarcaController::class, 'index_marca']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/marca', [MarcaController::class, 'store_marca']);
@@ -71,12 +66,4 @@ Route::prefix('descricao_marca')->group(function () {
     Route::delete('{id}', [DescricaoMarcaController::class, 'destroy_descricao_marca']);
 });
 
-// Route::middleware('auth:sanctum')->group(function () {
-    // Route::get('/modelos', [ModeloController::class, 'index_modelo']);
-    // Route::post('/modelos', [ModeloController::class, 'store_modelo']);
-    // Route::get('/modelos/{id}', [ModeloController::class, 'show_modelo']);
-    // Route::get('/marca', [MarcaController::class, 'index_marca']);
-    // Route::post('/marca', [MarcaController::class, 'store_marca']);
-    // Route::get('/marca/{id}', [MarcaController::class, 'show_marca']);
-// });
 

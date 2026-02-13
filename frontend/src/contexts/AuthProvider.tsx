@@ -8,7 +8,13 @@ interface AuthContextType {
   loading: boolean;
   login: (username: string, password: string) => Promise<boolean>;
   logout: () => Promise<void>;
-  register: (name: string, username: string, email: string, password: string) => Promise<boolean>;
+  register: (
+    name: string, 
+    username: string, 
+    email: string, 
+    password: string
+  ) => Promise<boolean>;
+  atualizarPerfil: (data: Partial<User>) => Promise<User>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -84,8 +90,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const atualizarPerfil = async (data: Partial<User>): Promise<User> => {
+    const novoUser = await userService.atualizarPerfil(data);
+    setUser(novoUser);
+    return novoUser;
+  }
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, register }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, register, atualizarPerfil }}>
       {!loading && children}
     </AuthContext.Provider>
   );

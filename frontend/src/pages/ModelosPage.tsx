@@ -8,12 +8,16 @@ import ModeloList from "../components/ModeloList";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Paginacao from "../components/Paginacao";
 import { useTheme } from "../contexts/ThemeContext";
+import type { User } from "../types/user";
+import { userService } from "../services/userService";
+import { Tag } from "lucide-react";
 
 export default function ModelosPage() {
     const { dark } = useTheme();
     const [modelos, setModelos] = useState<Modelo[]>([]);
     const [marcas, setMarcas] = useState<Marca[]>([]);
     const [loadingInicial, setLoadingInicial] = useState(true);
+    const [user, setUser] = useState<User | null>(null);
 
     const [paginaAtual, setPaginaAtual] = useState(1);
     const porPagina = 5;
@@ -24,6 +28,8 @@ export default function ModelosPage() {
         const fetchData = async () => {
             try {
                 const [m, mo] = await Promise.all([getMarcas(), modeloService.listar()]);
+                const user = await userService.meuUser();
+                setUser(user);
                 setMarcas(m);
                 setModelos(mo);
             } catch (err) {
@@ -59,33 +65,46 @@ export default function ModelosPage() {
     };
 
     return (
-        <div className="min-h-screen p-8 mt-17">
-            <div 
-                className={`max-w-3xl mx-auto mt-10 border p-8 rounded-2xl shadow-lg ${
-                    dark 
-                        ? "bg-zinc-600 border-neutral-500"
-                        : "border-gray-100 bg-white/80"
-                    }`
-                }
-            >
-                <ModeloForm 
-                    marcas={marcas} 
-                    onAdd={handleAddModelo} 
-                />
-                <ModeloList 
-                    modelos={modelosPagina} 
-                    marcas={marcas}
-                    setModelos={setModelos}
+        <div className="min-h-screen mt-25 w-full">
+            <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="flex flex-row max-w-4xl mx-auto items-center gap-3 mb-9">
+                    <div className="grow py-3 rounded-lg flex items-center justify-center transition-all">
+                        <div className={`w-20 h-20 flex items-center justify-center rounded-lg transition-all 
+                            ${dark ? "bg-violet-600/20" : "bg-indigo-500/20"}`}
+                        >
+                            <Tag className={`w-10 h-10 transition-all 
+                                ${dark ? "text-purple-600" : "text-indigo-600 "}`} 
+                            />
+                        </div>
+                    </div>
+                    <div className="text-left grow-20 mb-2">
+                        <p className="text-2xl font-bold">Cadastrar Modelos</p>
+                        <p className="font-semibold text-gray-500">Gerencie os modelos de veículas cadastrados.</p>
+                    </div>
+                </div>
+                <div className={`rounded-xl border shadow-sm transition-colors max-w-4xl mx-auto my-10 px-7 pb-5 pt-7 ${
+                    dark ? "bg-zinc-700/50 border-neutral-600" : "border-gray-100 bg-white/80"}`}
                 >
-                    <Paginacao 
-                        totalItems={modelos.length}
-                        itemsPorPage={porPagina}
-                        paginaAtual={paginaAtual}
-                        setPaginaAtual={setPaginaAtual}
+                    <ModeloForm 
+                        marcas={marcas} 
+                        onAdd={handleAddModelo} 
+                    />
+                    <ModeloList 
+                        modelos={modelosPagina} 
+                        marcas={marcas}
+                        setModelos={setModelos}
+                        user={user}
                     >
-                        modelos
-                    </Paginacao>
-                </ModeloList>
+                        <Paginacao 
+                            totalItems={modelos.length}
+                            itemsPorPage={porPagina}
+                            paginaAtual={paginaAtual}
+                            setPaginaAtual={setPaginaAtual}
+                        >
+                            modelos
+                        </Paginacao>
+                    </ModeloList>
+                </div>
             </div>
         </div>
     );
